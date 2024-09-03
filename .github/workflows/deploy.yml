@@ -18,7 +18,14 @@ permissions:
 
 jobs:
   build-and-deploy:
+    permissions:
+      pages: write
+      id-token: write
+
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -33,10 +40,7 @@ jobs:
       - name: check the dist folder
         run: ls -la dist
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: dist
-          token: ${{ secrets.GITHUB_TOKEN }}
+        id: deployment
+        uses: actions/deploy-pages@v4 
 
 
