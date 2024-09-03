@@ -1,0 +1,44 @@
+---
+#--------------------------------------------------
+#  构建并发布
+#--------------------------------------------------
+#
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+env:
+  tag: ${{ github.event.head_commit.id }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Update index.html
+        run: ./update.sh
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: dist
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
