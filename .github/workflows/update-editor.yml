@@ -26,7 +26,7 @@ jobs:
       - name: Update index.html
         run: |
           # 监控的目录
-          watch_dir: public/juice-editor/assets
+          watch_dir='public/juice-editor/assets'
 
           # index.html 文件路径
           index_file: index.html
