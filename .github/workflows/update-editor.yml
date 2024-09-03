@@ -29,7 +29,7 @@ jobs:
           watch_dir='public/juice-editor/assets'
 
           # index.html 文件路径
-          index_file: index.html
+          index_file='index.html'
           # 获取最新的 JS 和 CSS 文件名
           js_file=$(ls -t $watch_dir/index-*.js | head -n1 | xargs basename)
           css_file=$(ls -t $watch_dir/index-*.css | head -n1 | xargs basename)
@@ -50,9 +50,9 @@ jobs:
           fi
 
           echo "已更新 index.html 中的文件引用"
-      - name: Commit changes
-        run: |
-          git add index.html
-          git commit -m "Update Juice Editor to latest version"
-          git push
+      - name: commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'chore(workflow): Update Juice Editor'
+          commit_user_name: GitHub Action
 
